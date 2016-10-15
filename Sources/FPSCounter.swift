@@ -103,6 +103,7 @@ public class FPSCounter: NSObject {
         self.stopTracking()
 
         self.runloop = runloop
+        self.mode = mode
         self.displayLink.add(to: runloop, forMode: mode)
     }
 
