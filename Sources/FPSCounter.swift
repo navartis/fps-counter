@@ -76,16 +76,16 @@ public class FPSCounter: NSObject {
     // MARK: - Configuration
 
     /// The delegate that should receive FPS updates.
-    open weak var delegate: FPSCounterDelegate?
+    public weak var delegate: FPSCounterDelegate?
 
     /// Delay between FPS updates. Longer delays mean more averaged FPS numbers.
-    open var notificationDelay: TimeInterval = 1.0
+    public var notificationDelay: TimeInterval = 1.0
 
 
     // MARK: - Tracking
 
-    fileprivate var runloop: RunLoop?
-    fileprivate var mode: String?
+    private var runloop: RunLoop?
+    private var mode: RunLoopMode?
 
     /// Start tracking FPS updates.
     ///
@@ -99,7 +99,7 @@ public class FPSCounter: NSObject {
     ///   - runloop: The runloop to start tracking in
     ///   - mode:    The mode(s) to track in the runloop
     ///
-    open func startTracking(inRunLoop runloop: RunLoop = RunLoop.main, mode: RunLoopMode = RunLoopMode.commonModes) {
+    public func startTracking(inRunLoop runloop: RunLoop = RunLoop.main, mode: RunLoopMode = RunLoopMode.commonModes) {
         self.stopTracking()
 
         self.runloop = runloop
@@ -110,10 +110,10 @@ public class FPSCounter: NSObject {
     ///
     /// This method does nothing if the counter is not currently tracking.
     ///
-    open func stopTracking() {
+    public func stopTracking() {
         guard let runloop = self.runloop, let mode = self.mode else { return }
 
-        self.displayLink.remove(from: runloop, forMode: RunLoopMode(rawValue: mode))
+        self.displayLink.remove(from: runloop, forMode: mode)
         self.runloop = nil
         self.mode = nil
     }
@@ -121,10 +121,10 @@ public class FPSCounter: NSObject {
 
     // MARK: - Handling Frame Updates
 
-    fileprivate var lastNotificationTime: CFAbsoluteTime = 0.0
-    fileprivate var numberOfFrames: Int = 0
+    private var lastNotificationTime: CFAbsoluteTime = 0.0
+    private var numberOfFrames: Int = 0
 
-    fileprivate func updateFromDisplayLink(_ displayLink: CADisplayLink) {
+    private func updateFromDisplayLink(_ displayLink: CADisplayLink) {
         if self.lastNotificationTime == 0.0 {
             self.lastNotificationTime = CFAbsoluteTimeGetCurrent()
             return
@@ -142,7 +142,7 @@ public class FPSCounter: NSObject {
         }
     }
 
-    fileprivate func notifyUpdateForElapsedTime(_ elapsedTime: CFAbsoluteTime) {
+    private func notifyUpdateForElapsedTime(_ elapsedTime: CFAbsoluteTime) {
         let fps = Int(round(Double(self.numberOfFrames) / elapsedTime))
         self.delegate?.fpsCounter(self, didUpdateFramesPerSecond: fps)
     }

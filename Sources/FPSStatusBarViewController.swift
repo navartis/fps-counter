@@ -14,7 +14,7 @@ import UIKit
 internal class FPSStatusBarViewController: UIViewController, FPSCounterDelegate {
 
     fileprivate let fpsCounter = FPSCounter()
-    fileprivate let label: UILabel = UILabel()
+    private let label: UILabel = UILabel()
 
 
     // MARK: - Initialization
@@ -31,7 +31,7 @@ internal class FPSStatusBarViewController: UIViewController, FPSCounterDelegate 
         self.commonInit()
     }
 
-    fileprivate func commonInit() {
+    private func commonInit() {
         NotificationCenter.default.addObserver(self,
             selector: #selector(FPSStatusBarViewController.updateStatusBarFrame(_:)),
             name: NSNotification.Name.UIApplicationDidChangeStatusBarOrientation,
